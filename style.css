@@ -1,141 +1,40 @@
 body {
-    margin: 0;
-    height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: linear-gradient(to top, #a1c4fd, #c2e9fb);
-    overflow: hidden;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(#a1c4fd,#c2e9fb);
 }
 
-/* ☀️ MATAHARI */
-.sun {
-    position: absolute;
-    top: 40px;
-    right: 60px;
-    font-size: 60px;
-}
+.sun { position:absolute; top:20px; right:30px; font-size:50px; }
 
-/* ☁️ AWAN */
 .cloud {
-    position: absolute;
-    background: white;
-    border-radius: 50px;
+    position:absolute;
+    width:100px;
+    height:50px;
+    background:white;
+    border-radius:50px;
 }
 
-.cloud::before,
-.cloud::after {
-    content: "";
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-}
+.cloud1 { top:50px; left:30px; }
+.cloud2 { bottom:50px; right:30px; }
 
-.cloud1 {
-    width: 100px;
-    height: 50px;
-    top: 80px;
-    left: 50px;
-}
-
-.cloud1::before {
-    width: 60px;
-    height: 60px;
-    top: -20px;
-    left: 10px;
-}
-
-.cloud1::after {
-    width: 70px;
-    height: 70px;
-    top: -30px;
-    left: 40px;
-}
-
-.cloud2 {
-    width: 120px;
-    height: 60px;
-    bottom: 100px;
-    right: 50px;
-}
-
-/* 📦 CARD */
 .card {
-    background: rgba(255,255,255,0.8);
-    padding: 25px;
-    border-radius: 25px;
-    width: 350px;
-    text-align: center;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    background:white;
+    padding:20px;
+    border-radius:20px;
 }
 
-/* JUDUL */
-h1 {
-    margin-bottom: 20px;
-}
-
-h1 span {
-    color: #0077ff;
-}
-
-/* INPUT */
-.input-area {
-    display: flex;
-    gap: 10px;
-}
-
-input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-}
-
-/* BUTTON */
-button {
-    padding: 10px 15px;
-    border-radius: 50%;
-    border: none;
-    background: #0077ff;
-    color: white;
-    cursor: pointer;
-}
-
-/* LIST */
-ul {
-    padding: 0;
-    margin-top: 20px;
-}
-
-/* ITEM */
 li {
-    list-style: none;
-    background: #e3f2fd;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    list-style:none;
+    margin:10px 0;
+    padding:10px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
 }
 
-/* CHECK BULAT */
-li::before {
-    content: "";
-    width: 15px;
-    height: 15px;
-    background: white;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-/* DONE */
-.done {
-    text-decoration: line-through;
-    opacity: 0.6;
-}
+.belum { background:#ffe0e0; }
+.proses { background:#fff3cd; }
+.selesai { background:#d4edda; }

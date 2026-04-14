@@ -1,28 +1,259 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>To Do List Tugas</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>To Do List Alam</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background: linear-gradient(to top, #a1c4fd, #c2e9fb);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* ========= MATAHARI ========= */
+.sun{
+    position:absolute;
+    top:40px;
+    left:60px;
+    width:60px;
+    height:60px;
+    background:yellow;
+    border-radius:50%;
+    box-shadow:0 0 30px yellow;
+    animation: floatSun 4s ease-in-out infinite;
+}
+@keyframes floatSun{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(20px);}
+}
+
+/* ========= AWAN ========= */
+.cloud{
+    position:absolute;
+    background:white;
+    border-radius:50px;
+    width:90px;
+    height:45px;
+    opacity:0.85;
+    animation: moveCloud linear infinite;
+}
+
+.cloud::before,
+.cloud::after{
+    content:"";
+    position:absolute;
+    background:white;
+    border-radius:50%;
+}
+
+.cloud::before{width:50px;height:50px;top:-20px;left:10px;}
+.cloud::after{width:60px;height:60px;top:-25px;left:35px;}
+
+.c1{top:80px;left:-120px;animation-duration:40s;}
+.c2{top:140px;left:-200px;animation-duration:55s;}
+.c3{top:200px;left:-300px;animation-duration:45s;}
+
+@keyframes moveCloud{
+    from{transform:translateX(-200px);}
+    to{transform:translateX(120vw);}
+}
+
+@keyframes boxMove{
+    0%   {transform:translate(0,0);}
+    25%  {transform:translate(60px,-10px);}
+    50%  {transform:translate(120px,10px);}
+    75%  {transform:translate(180px,-10px);}
+    100% {transform:translate(240px,0);}
+}
+
+.b1{left:0;}
+.b2{left:80px;animation-delay:1s;}
+.b3{left:160px;animation-delay:2s;}
+
+/* ========= TAMAN BUNGA ========= */
+.garden{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:120px;
+    background:linear-gradient(to top, #2ecc71, transparent);
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:20px;
+}
+
+.flower{
+    font-size:35px;
+    animation:sway 3s ease-in-out infinite;
+}
+
+@keyframes sway{
+    0%,100%{transform:rotate(-5deg);}
+    50%{transform:rotate(5deg);}
+}
+
+/* ========= TODO ========= */
+.container{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    width:340px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    z-index:2;
+}
+
+h2{text-align:center;}
+
+.input-row{
+    display:flex;
+    gap:5px;
+    margin-bottom:10px;
+}
+
+input,select,button{padding:8px;}
+input{flex:1;}
+
+#filterDay{width:100%;margin-bottom:10px;}
+
+.task{
+    background:#ffe3e3;
+    padding:10px;
+    margin-top:10px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.done{
+    background:#d4f7d4;
+    text-decoration:line-through;
+}
+
+button{cursor:pointer;}
+.small-btn{font-size:12px;margin-left:3px;}
+</style>
 </head>
+
 <body>
 
-<div class="sun">☀️</div>
+<!-- MATAHARI -->
+<div class="sun"></div>
 
-<div class="cloud cloud1"></div>
-<div class="cloud cloud2"></div>
+<!-- AWAN -->
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
 
-<div class="card">
-    <h1>To Do List <br><span>Tugas</span></h1>
 
-    <div class="input-area">
-        <input type="text" id="taskInput" placeholder="Tambah tugas...">
+<!-- BUNGA -->
+<div class="garden">
+    <div class="flower">💐🌸</div>
+    <div class="flower">🌺</div>
+    <div class="flower">🌼</div>
+    <div class="flower">🌻</div>
+    <div class="flower">🌸</div>
+    <div class="flower">🌷</div>
+    <div class="flower">🪻🌹🏵️</div>
+</div>
+
+<!-- TODO -->
+<div class="container">
+    <h2>To Do List</h2>
+
+    <div class="input-row">
+        <input id="taskInput" placeholder="Tambah tugas...">
+
+        <select id="daySelect">
+            <option>Senin</option>
+            <option>Selasa</option>
+            <option>Rabu</option>
+            <option>Kamis</option>
+            <option>Jumat</option>
+            <option>Sabtu</option>
+            <option>Minggu</option>
+        </select>
+
         <button onclick="addTask()">+</button>
     </div>
 
-    <ul id="taskList"></ul>
+    <select id="filterDay" onchange="renderTask()">
+        <option value="all">🔍 Semua Hari</option>
+        <option>Senin</option><option>Selasa</option>
+        <option>Rabu</option><option>Kamis</option>
+        <option>Jumat</option><option>Sabtu</option>
+        <option>Minggu</option>
+    </select>
+
+    <div id="list"></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function save(){
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function addTask(){
+    let text = document.getElementById("taskInput").value;
+    let day = document.getElementById("daySelect").value;
+
+    if(text.trim()==="") return;
+
+    tasks.push({text,day,status:"todo"});
+    document.getElementById("taskInput").value="";
+    save(); renderTask();
+}
+
+function toggleDone(i){
+    tasks[i].status = tasks[i].status==="done"?"todo":"done";
+    save(); renderTask();
+}
+
+function deleteTask(i){
+    tasks.splice(i,1);
+    save(); renderTask();
+}
+
+function editTask(i){
+    let n = prompt("Edit:",tasks[i].text);
+    if(n){tasks[i].text=n; save(); renderTask();}
+}
+
+function renderTask(){
+    let list=document.getElementById("list");
+    let filter=document.getElementById("filterDay").value;
+    list.innerHTML="";
+
+    tasks.forEach((t,i)=>{
+        if(filter!=="all" && t.day!==filter) return;
+
+        let div=document.createElement("div");
+        div.className="task";
+        if(t.status==="done") div.classList.add("done");
+
+        div.innerHTML=`
+        <div>
+            <b>${t.text}</b><br>
+            <small>📅 ${t.day}</small>
+        </div>
+        <div>
+            <button onclick="toggleDone(${i})">✔</button>
+            <button onclick="editTask(${i})">✏</button>
+            <button onclick="deleteTask(${i})">❌</button>
+        </div>`;
+        list.appendChild(div);
+    });
+}
+renderTask();
+</script>
+
 </body>
 </html>
