@@ -62,3 +62,10 @@ li {
     text-decoration: line-through;
     opacity: 0.6;
 }
+li {
+    transition: 0.3s;
+}
+
+li:hover {
+    transform: scale(1.03);
+}
