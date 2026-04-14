@@ -14,25 +14,41 @@ function addTask() {
     taskInput.value = "";
 }
 
-// tampilkan tugas
-function createTask(text) {
+// tampilkan tugasfunction createTask(text) {
     const li = document.createElement("li");
-    li.textContent = text;
+
+    const span = document.createElement("span");
+    span.textContent = text;
 
     // klik = selesai
-    li.onclick = () => li.classList.toggle("done");
+    span.onclick = () => span.classList.toggle("done");
+
+    // tombol edit
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+
+    editBtn.onclick = (e) => {
+        e.stopPropagation();
+        const newText = prompt("Edit tugas:", span.textContent);
+        if (newText) {
+            span.textContent = newText;
+        }
+    };
 
     // tombol hapus
-    const btn = document.createElement("button");
-    btn.textContent = "X";
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "X";
 
-    btn.onclick = (e) => {
+    deleteBtn.onclick = (e) => {
         e.stopPropagation();
         li.remove();
         removeTask(text);
     };
 
-    li.appendChild(btn);
+    li.appendChild(span);
+    li.appendChild(editBtn);
+    li.appendChild(deleteBtn);
+
     taskList.appendChild(li);
 }
 
