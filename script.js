@@ -55,3 +55,12 @@ function removeTask(task) {
     tasks = tasks.filter(t => t !== task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+function searchTask() {
+    const keyword = document.getElementById("searchInput").value.toLowerCase();
+    const tasks = document.querySelectorAll("#taskList li");
+
+    tasks.forEach(task => {
+        const text = task.firstChild.textContent.toLowerCase();
+        task.style.display = text.includes(keyword) ? "flex" : "none";
+    });
+}
