@@ -80,3 +80,18 @@ function searchTask() {
         task.style.display = text.includes(keyword) ? "flex" : "none";
     });
 }
+function filterTask(type) {
+    const tasks = document.querySelectorAll("#taskList li span");
+
+    tasks.forEach(task => {
+        const parent = task.parentElement;
+
+        if (type === "all") {
+            parent.style.display = "flex";
+        } else if (type === "done") {
+            parent.style.display = task.classList.contains("done") ? "flex" : "none";
+        } else {
+            parent.style.display = !task.classList.contains("done") ? "flex" : "none";
+        }
+    });
+}
